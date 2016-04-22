@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onManage(View view) {
-
+        Intent intent = new Intent(this, ManageActivity.class);
+        startActivity(intent);
     }
 }
