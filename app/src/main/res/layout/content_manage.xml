@@ -61,7 +61,8 @@
             android:layout_height="wrap_content"
             android:text="@string/add_class"
             android:id="@+id/btnAddClass"
-            android:enabled="false" />
+            android:enabled="false"
+            android:onClick="onAddClass" />
 
         <EditText
             android:layout_width="match_parent"

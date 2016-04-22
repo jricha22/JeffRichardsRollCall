@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import edu.westga.jeffrichardsrollcall.R;
 
@@ -24,6 +25,7 @@ public class ManageActivity extends AppCompatActivity {
     private Button manageStudents;
     private Button addClass;
     private EditText newClassName;
+    private ArrayAdapter<String> classAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,9 @@ public class ManageActivity extends AppCompatActivity {
         classes.add("CS6242-1");
         classes.add("CS6242-2");
         classes.add("CS6242-3");
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.class_listview, classes);
-        this.classList.setAdapter(adapter);
+        this.classAdapter = new ArrayAdapter<>(this, R.layout.class_listview, classes);
+        this.classAdapter.setNotifyOnChange(true);
+        this.classList.setAdapter(this.classAdapter);
 
         this.classList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -74,5 +77,17 @@ public class ManageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void onAddClass(View view) {
+        // TODO add class to database
+        this.classAdapter.add(this.newClassName.getText().toString());
+        this.classAdapter.sort(new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return lhs.compareTo(rhs);
+            }
+        });
+        this.newClassName.getText().clear();
     }
 }
