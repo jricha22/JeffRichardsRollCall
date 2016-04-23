@@ -13,4 +13,5 @@
     <string name="delete_student">Delete Student</string>
     <string name="add_student">Add Student</string>
     <string name="students">Students</string>
+    <string name="class_label">Class:</string>
 </resources>

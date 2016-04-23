@@ -24,7 +24,7 @@ import edu.westga.jeffrichardsrollcall.R;
 import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 public class ManageStudentsActivity extends AppCompatActivity {
-    private TextView className;
+    private String className;
     private ListView studentList;
     private Button deleteStudent;
     private Button addStudent;
@@ -37,8 +37,9 @@ public class ManageStudentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_students);
         Intent intent = getIntent();
-        this.className = (TextView) findViewById(R.id.lblClassName);
-        this.className.setText(intent.getStringExtra(ManageActivity.CLASS_SELECTION));
+        this.className = intent.getStringExtra(ManageActivity.CLASS_SELECTION);
+        TextView classLabel = (TextView) findViewById(R.id.lblClassName);
+        classLabel.setText(getResources().getString(R.string.class_label) + " " + this.className);
         this.studentList = (ListView) findViewById(R.id.lstStudents);
         this.deleteStudent = (Button) findViewById(R.id.btnDeleteStudent);
         this.addStudent = (Button) findViewById(R.id.btnAddStudent);
@@ -86,7 +87,7 @@ public class ManageStudentsActivity extends AppCompatActivity {
     }
 
     private void populateStudents() {
-        ArrayList<String> newClasses = this.myDbHandler.getStudentsInClass(this.className.getText().toString());
+        ArrayList<String> newClasses = this.myDbHandler.getStudentsInClass(this.className);
         this.studentAdapter.clear();
         for (String aClass: newClasses) {
             this.studentAdapter.add(aClass);
@@ -94,7 +95,7 @@ public class ManageStudentsActivity extends AppCompatActivity {
     }
 
     public void onAddStudent(View view) {
-        if (this.myDbHandler.addStudentToClass(this.newStudentName.getText().toString(), this.className.getText().toString())) {
+        if (this.myDbHandler.addStudentToClass(this.newStudentName.getText().toString(), this.className)) {
             this.populateStudents();
         } else {
             Toast toast = Toast.makeText(getApplicationContext(), "Student Already Exists", Toast.LENGTH_SHORT);
@@ -106,7 +107,7 @@ public class ManageStudentsActivity extends AppCompatActivity {
 
     public void onDeleteStudent(View view) {
         String itemToDelete = this.studentList.getItemAtPosition(this.studentList.getCheckedItemPosition()).toString();
-        this.myDbHandler.deleteStudentFromClass(itemToDelete, this.className.getText().toString());
+        this.myDbHandler.deleteStudentFromClass(itemToDelete, this.className);
         this.populateStudents();
     }
 }
