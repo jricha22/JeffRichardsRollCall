@@ -89,6 +89,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 classList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
+        cursor.close();
         db.close();
         return classList;
     }
@@ -161,6 +162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 studentList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
+        cursor.close();
         db.close();
         return studentList;
     }
