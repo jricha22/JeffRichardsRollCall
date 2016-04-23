@@ -3,6 +3,7 @@ package edu.westga.jeffrichardsrollcall.model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -36,15 +37,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addClass(String newClass) {
+    public boolean addClass(String newClass) {
+        boolean retval = true;
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(CLASS_ID, newClass);
 
         // Inserting Row
-        db.insert(TABLE_CLASSES, null, values);
+        try {
+            db.insertOrThrow(TABLE_CLASSES, null, values);
+        } catch (SQLiteConstraintException exc) {
+            retval = false;
+        }
         db.close();
+        return retval;
     }
 
     // Getting All Contacts

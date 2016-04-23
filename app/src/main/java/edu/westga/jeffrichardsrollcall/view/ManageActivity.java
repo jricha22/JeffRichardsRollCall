@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextWatcher;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -93,8 +95,13 @@ public class ManageActivity extends AppCompatActivity {
     }
 
     public void onAddClass(View view) {
-        this.myDbHandler.addClass(this.newClassName.getText().toString());
-        this.populateClasses();
+        if (this.myDbHandler.addClass(this.newClassName.getText().toString())) {
+            this.populateClasses();
+        } else {
+                Toast toast = Toast.makeText(getApplicationContext(), "Class Already Exists", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM, 0, 50);
+                toast.show();
+        }
         this.newClassName.getText().clear();
     }
 
