@@ -16,28 +16,27 @@ import android.widget.AdapterView;
 import java.util.ArrayList;
 
 import edu.westga.jeffrichardsrollcall.R;
+import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity {
-    public final static String CLASS_SELECTION = "edu.westga.betsyjeffwordjumble.CLASS_SELECTION";
+    public final static String CLASS_SELECTION = "edu.westga.jeffrichardsrollcall.main.CLASS_SELECTION";
 
     private Spinner classSpinner;
     private boolean ignoreSelection;
+    private ArrayAdapter<String> classList;
+    private DatabaseHandler myDbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.myDbHandler = new DatabaseHandler(this.getApplicationContext());
         this.ignoreSelection = true;
         this.classSpinner = (Spinner) findViewById(R.id.spnClasses);
         ArrayList<String> choices = new ArrayList<>();
-        // TODO Read class list from DB
-        choices.add("Foo");
-        choices.add("Bar");
-        choices.add("Baz");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, choices);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.classSpinner.setAdapter(adapter);
+        this.classList = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, choices);
+        this.classList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.classSpinner.setAdapter(this.classList);
 
         this.classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -57,11 +56,24 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        this.populateClasses();
     }
 
     public void onManage(View view) {
         Intent intent = new Intent(this, ManageActivity.class);
         startActivity(intent);
+    }
+
+    private void populateClasses() {
+        ArrayList<String> newClasses = this.myDbHandler.getAllClasses();
+        this.classList.clear();
+        for (String aClass: newClasses) {
+            this.classList.add(aClass);
+        }
     }
 }

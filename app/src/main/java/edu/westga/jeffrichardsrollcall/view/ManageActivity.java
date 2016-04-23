@@ -1,5 +1,6 @@
 package edu.westga.jeffrichardsrollcall.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,14 +19,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import edu.westga.jeffrichardsrollcall.R;
+import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 public class ManageActivity extends AppCompatActivity {
+    public final static String CLASS_SELECTION = "edu.westga.jeffrichardsrollcall.manage.CLASS_SELECTION";
+
     private ListView classList;
     private Button deleteClass;
     private Button manageStudents;
     private Button addClass;
     private EditText newClassName;
     private ArrayAdapter<String> classAdapter;
+    private DatabaseHandler myDbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +41,13 @@ public class ManageActivity extends AppCompatActivity {
         this.manageStudents = (Button) findViewById(R.id.btnManageStudents);
         this.addClass = (Button) findViewById(R.id.btnAddClass);
         this.newClassName = (EditText) findViewById(R.id.txtClassName);
+        this.myDbHandler = new DatabaseHandler(this.getApplicationContext());
         ArrayList<String> classes = new ArrayList<>();
-        classes.add("CS6242-1");
-        classes.add("CS6242-2");
-        classes.add("CS6242-3");
         this.classAdapter = new ArrayAdapter<>(this, R.layout.class_listview, classes);
         this.classAdapter.setNotifyOnChange(true);
         this.classList.setAdapter(this.classAdapter);
+
+        this.populateClasses();
 
         this.classList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -79,15 +84,30 @@ public class ManageActivity extends AppCompatActivity {
         });
     }
 
+    private void populateClasses() {
+        ArrayList<String> newClasses = this.myDbHandler.getAllClasses();
+        this.classAdapter.clear();
+        for (String aClass: newClasses) {
+            this.classAdapter.add(aClass);
+        }
+    }
+
     public void onAddClass(View view) {
-        // TODO add class to database
-        this.classAdapter.add(this.newClassName.getText().toString());
-        this.classAdapter.sort(new Comparator<String>() {
-            @Override
-            public int compare(String lhs, String rhs) {
-                return lhs.compareTo(rhs);
-            }
-        });
+        this.myDbHandler.addClass(this.newClassName.getText().toString());
+        this.populateClasses();
         this.newClassName.getText().clear();
+    }
+
+    public void onDeleteClass(View view) {
+        String itemToDelete = this.classList.getItemAtPosition(this.classList.getCheckedItemPosition()).toString();
+        this.myDbHandler.deleteClass(itemToDelete);
+        this.populateClasses();
+    }
+
+    public void onManageStudents(View view) {
+        String itemToManage = this.classList.getItemAtPosition(this.classList.getCheckedItemPosition()).toString();
+        Intent intent = new Intent(this, ManageStudentsActivity.class);
+        intent.putExtra(CLASS_SELECTION, itemToManage);
+        startActivity(intent);
     }
 }

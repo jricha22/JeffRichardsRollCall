@@ -12,6 +12,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.westga.jeffrichardsrollcall.view.ManageActivity"
     tools:showIn="@layout/activity_manage"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     android:weightSum="1">
 
     <TextView
@@ -41,14 +43,16 @@
             android:layout_height="wrap_content"
             android:text="@string/delete_class"
             android:id="@+id/btnDeleteClass"
-            android:enabled="false" />
+            android:enabled="false"
+            android:onClick="onDeleteClass" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/manage_students"
             android:id="@+id/btnManageStudents"
-            android:enabled="false" />
+            android:enabled="false"
+            android:onClick="onManageStudents" />
     </LinearLayout>
 
     <LinearLayout

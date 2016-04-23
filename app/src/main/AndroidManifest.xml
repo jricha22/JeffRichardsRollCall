@@ -36,6 +36,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.westga.jeffrichardsrollcall.view.MainActivity" />
         </activity>
+        <activity
+            android:name=".view.ManageStudentsActivity"
+            android:label="@string/title_activity_manage_students"
+            android:parentActivityName=".view.ManageActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.westga.jeffrichardsrollcall.view.ManageActivity" />
+        </activity>
     </application>
 
 </manifest>
