@@ -14,6 +14,7 @@
     tools:showIn="@layout/activity_manage"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    android:background="@drawable/background"
     android:weightSum="1">
 
     <TextView
@@ -23,7 +24,9 @@
         android:text="@string/classes"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
 
     <ListView
         android:layout_width="match_parent"
@@ -31,7 +34,8 @@
         android:id="@+id/lstClasses"
         android:choiceMode="singleChoice"
         android:clickable="true"
-        android:listSelector="#666666" />
+        android:listSelector="#666666"
+        android:background="#ffffff" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -75,7 +79,8 @@
             android:editable="true"
             android:enabled="true"
             android:hint="New Class ID"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="#ffffff" />
     </LinearLayout>
 
 </LinearLayout>

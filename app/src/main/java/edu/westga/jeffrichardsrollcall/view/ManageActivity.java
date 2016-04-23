@@ -92,6 +92,8 @@ public class ManageActivity extends AppCompatActivity {
         for (String aClass: newClasses) {
             this.classAdapter.add(aClass);
         }
+        this.deleteClass.setEnabled(false);
+        this.manageStudents.setEnabled(false);
     }
 
     public void onAddClass(View view) {

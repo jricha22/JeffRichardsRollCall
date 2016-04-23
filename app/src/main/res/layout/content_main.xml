@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".view.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -21,7 +22,9 @@
         android:id="@+id/textView2"
         android:layout_above="@+id/spnClasses"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -31,7 +34,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#ffffff"
+        android:clickable="true" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="500px" />
 
     <Button
         android:layout_width="wrap_content"

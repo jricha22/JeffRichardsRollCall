@@ -11,6 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.westga.jeffrichardsrollcall.view.ClassRollCallActivity"
+    android:background="@drawable/background"
     tools:showIn="@layout/activity_class_roll_call">
 
     <TextView
@@ -21,5 +22,6 @@
         android:id="@+id/lblText"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp" />
+        android:layout_marginTop="48dp"
+        android:textColor="#ffffff" />
 </LinearLayout>

@@ -54,11 +54,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onConfigure(SQLiteDatabase db){
-        db.setForeignKeyConstraintsEnabled(true);
-    }
-
-    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENTS);
@@ -131,6 +126,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Deleting single contact
     public boolean deleteClass(String deletedClass) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_STUDENTS, CLASS_KEY + " = ?", new String[] { deletedClass });
         int count = db.delete(TABLE_CLASSES, CLASS_ID + " = ?", new String[] { deletedClass });
         db.close();
         return count == 1;

@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     public final static String CLASS_SELECTION = "edu.westga.jeffrichardsrollcall.main.CLASS_SELECTION";
 
     private Spinner classSpinner;
-    private boolean ignoreSelection;
     private ArrayAdapter<String> classList;
     private DatabaseHandler myDbHandler;
 
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.myDbHandler = new DatabaseHandler(this.getApplicationContext());
-        this.ignoreSelection = true;
         this.classSpinner = (Spinner) findViewById(R.id.spnClasses);
         ArrayList<String> choices = new ArrayList<>();
         this.classList = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, choices);
@@ -41,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
         this.classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (ignoreSelection) {
-                    ignoreSelection = false;
+                if (position == 0) {
                     return;
                 }
                 Intent intent = new Intent(MainActivity.this, ClassRollCallActivity.class);
@@ -62,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         this.populateClasses();
+        this.classSpinner.setSelection(0);
     }
 
     public void onManage(View view) {
@@ -72,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private void populateClasses() {
         ArrayList<String> newClasses = this.myDbHandler.getAllClasses();
         this.classList.clear();
+        this.classList.add(getResources().getString(R.string.select_class));
         for (String aClass: newClasses) {
             this.classList.add(aClass);
         }
