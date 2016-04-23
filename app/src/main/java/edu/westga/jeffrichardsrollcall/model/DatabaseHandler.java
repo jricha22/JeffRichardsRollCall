@@ -27,7 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CLASSES_TABLE = "CREATE TABLE IF NOT EXISTS" + TABLE_CLASSES + "(" + CLASS_ID + " TEXT PRIMARY KEY)";
+        String CREATE_CLASSES_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_CLASSES + "(" + CLASS_ID + " TEXT PRIMARY KEY)";
         db.execSQL(CREATE_CLASSES_TABLE);
     }
 
@@ -54,16 +54,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return retval;
     }
 
-    // Getting All Contacts
     public ArrayList<String> getAllClasses() {
         ArrayList<String> classList = new ArrayList<>();
-        // Select All Query
         String selectQuery = "SELECT id FROM " + TABLE_CLASSES + " ORDER BY id";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 classList.add(cursor.getString(0));
@@ -103,10 +100,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     */
 
     // Deleting single contact
-    public void deleteClass(String deletedClass) {
+    public boolean deleteClass(String deletedClass) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_CLASSES, CLASS_ID + " = ?", new String[] { deletedClass });
+        int count = db.delete(TABLE_CLASSES, CLASS_ID + " = ?", new String[] { deletedClass });
         db.close();
+        return count == 1;
     }
 
 
@@ -123,4 +121,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
      */
 
+    public ArrayList<String> getStudentsInClass(String theClass) {
+        return new ArrayList<>();
+    }
+
+    public boolean addStudentToClass(String student, String theClass) {
+        return false;
+    }
+
+    public boolean deleteStudentFromClass(String student, String theClass) {
+        return false;
+    }
 }

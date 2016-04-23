@@ -10,4 +10,7 @@
     <string name="manage_students">Manage Students</string>
     <string name="title_activity_manage_students">Manage Students</string>
     <string name="select_class_for_roll_call">Select Class For Roll Call</string>
+    <string name="delete_student">Delete Student</string>
+    <string name="add_student">Add Student</string>
+    <string name="students">Students</string>
 </resources>
