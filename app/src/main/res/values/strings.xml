@@ -13,7 +13,9 @@
     <string name="delete_student">Delete Student</string>
     <string name="add_student">Add Student</string>
     <string name="students">Students</string>
-    <string name="class_label">Class:</string>
+    <string name="class_label">Class: %s</string>
     <string name="select_class">Please Select A Class</string>
     <string name="class_hint">Unique class ID</string>
+    <string name="apply">Apply</string>
+    <string name="roll_call_label">Select Students Present: %s</string>
 </resources>

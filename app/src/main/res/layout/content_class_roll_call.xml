@@ -12,16 +12,37 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.westga.jeffrichardsrollcall.view.ClassRollCallActivity"
     android:background="@drawable/background"
-    tools:showIn="@layout/activity_class_roll_call">
+    tools:showIn="@layout/activity_class_roll_call"
+    android:weightSum="1">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="279dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/lblText"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:textColor="#ffffff" />
+        android:text="@string/students"
+        android:id="@+id/lblClassName"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="244dp"
+        android:id="@+id/lstStudents"
+        android:choiceMode="multipleChoice"
+        android:clickable="true"
+        android:listSelector="#666666"
+        android:background="#ffffff"
+        android:layout_weight="0.85" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apply"
+        android:id="@+id/btnApply"
+        android:enabled="true"
+        android:onClick="onApply"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

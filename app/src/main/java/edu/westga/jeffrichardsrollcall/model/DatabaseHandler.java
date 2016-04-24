@@ -108,21 +108,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 cursor.getString(1), cursor.getString(2));
         // return contact
         return contact;
-    }
+    }*/
 
-    // Updating single contact
-    public int updateContact(Contact contact) {
+    public boolean updateStudentsPresent(ArrayList<String> studentsPresent, String theClass) {
         SQLiteDatabase db = this.getWritableDatabase();
+        boolean retval = true;
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, contact.getName());
-        values.put(KEY_PH_NO, contact.getPhoneNumber());
+        try {
+            db.beginTransaction();
+            for (String student : studentsPresent) {
+                db.execSQL("UPDATE " + TABLE_STUDENTS + " SET "
+                    + STUDENT_ROLL_COUNT + " = " + STUDENT_ROLL_COUNT + " +1 WHERE "
+                    + STUDENT_NAME + " = '" + student + "' AND " + CLASS_KEY + " = '" + theClass + "'");
+            }
+            db.execSQL("UPDATE " + TABLE_CLASSES + " SET "
+                + CLASS_ROLL_COUNT + " = " + CLASS_ROLL_COUNT + " +1 WHERE "
+                + CLASS_ID + " = '" + theClass + "'");
+            db.setTransactionSuccessful();
+        } catch (Exception exc) {
+            retval = false;
+        } finally {
+            db.endTransaction();
+        }
 
-        // updating row
-        return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(contact.getID()) });
+        db.close();
+        return retval;
     }
-    */
 
     // Deleting single contact
     public boolean deleteClass(String deletedClass) {

@@ -39,7 +39,7 @@ public class ManageStudentsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         this.className = intent.getStringExtra(ManageActivity.CLASS_SELECTION);
         TextView classLabel = (TextView) findViewById(R.id.lblClassName);
-        classLabel.setText(getResources().getString(R.string.class_label) + " " + this.className);
+        classLabel.setText(String.format(getResources().getString(R.string.class_label), this.className));
         this.studentList = (ListView) findViewById(R.id.lstStudents);
         this.deleteStudent = (Button) findViewById(R.id.btnDeleteStudent);
         this.addStudent = (Button) findViewById(R.id.btnAddStudent);
