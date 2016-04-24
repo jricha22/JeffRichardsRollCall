@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">JeffRichardsRollCall</string>
     <string name="action_settings">Settings</string>
-    <string name="manage_classes">Manage Classes</string>
+    <string name="manage_classes">Configure/Stats</string>
     <string name="title_activity_class_roll_call">Class Roll Call</string>
     <string name="title_activity_manage">Manage Activity</string>
     <string name="classes">Classes</string>
@@ -15,4 +15,5 @@
     <string name="students">Students</string>
     <string name="class_label">Class:</string>
     <string name="select_class">Please Select A Class</string>
+    <string name="class_hint">Unique class ID</string>
 </resources>

@@ -78,7 +78,7 @@
             android:id="@+id/txtClassName"
             android:editable="true"
             android:enabled="true"
-            android:hint="New Class ID"
+            android:hint="@string/class_hint"
             android:singleLine="true"
             android:background="#ffffff" />
     </LinearLayout>
