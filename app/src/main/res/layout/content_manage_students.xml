@@ -30,7 +30,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="244dp"
+        android:layout_height="181dp"
         android:id="@+id/lstStudents"
         android:choiceMode="singleChoice"
         android:clickable="true"

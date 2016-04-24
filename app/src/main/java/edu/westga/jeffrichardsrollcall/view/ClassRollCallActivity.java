@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import edu.westga.jeffrichardsrollcall.R;
+import edu.westga.jeffrichardsrollcall.model.Attendance;
 import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 public class ClassRollCallActivity extends AppCompatActivity {
@@ -50,10 +51,10 @@ public class ClassRollCallActivity extends AppCompatActivity {
     }
 
     private void populateStudents() {
-        ArrayList<String> newClasses = this.myDbHandler.getStudentsInClass(this.className);
+        ArrayList<Attendance> newStudents = this.myDbHandler.getStudentsInClass(this.className);
         this.studentAdapter.clear();
-        for (String aClass: newClasses) {
-            this.studentAdapter.add(aClass);
+        for (Attendance aStudent: newStudents) {
+            this.studentAdapter.add(aStudent.getName());
         }
     }
 

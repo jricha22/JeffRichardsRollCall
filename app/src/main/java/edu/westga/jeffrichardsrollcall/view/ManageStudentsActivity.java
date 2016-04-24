@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.westga.jeffrichardsrollcall.R;
+import edu.westga.jeffrichardsrollcall.model.Attendance;
 import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 public class ManageStudentsActivity extends AppCompatActivity {
@@ -29,7 +31,7 @@ public class ManageStudentsActivity extends AppCompatActivity {
     private Button deleteStudent;
     private Button addStudent;
     private EditText newStudentName;
-    private ArrayAdapter<String> studentAdapter;
+    private ClassListViewAdapter studentAdapter;
     private DatabaseHandler myDbHandler;
 
     @Override
@@ -45,9 +47,8 @@ public class ManageStudentsActivity extends AppCompatActivity {
         this.addStudent = (Button) findViewById(R.id.btnAddStudent);
         this.newStudentName = (EditText) findViewById(R.id.txtStudentName);
         this.myDbHandler = new DatabaseHandler(this.getApplicationContext());
-        ArrayList<String> students = new ArrayList<>();
-        this.studentAdapter = new ArrayAdapter<>(this, R.layout.class_listview, students);
-        this.studentAdapter.setNotifyOnChange(true);
+        ArrayList<HashMap<String, String>> classes = new ArrayList<>();
+        this.studentAdapter = new ClassListViewAdapter(this, classes);
         this.studentList.setAdapter(this.studentAdapter);
 
         this.populateStudents();
@@ -87,11 +88,12 @@ public class ManageStudentsActivity extends AppCompatActivity {
     }
 
     private void populateStudents() {
-        ArrayList<String> newClasses = this.myDbHandler.getStudentsInClass(this.className);
+        ArrayList<Attendance> newStudents = this.myDbHandler.getStudentsInClass(this.className);
         this.studentAdapter.clear();
-        for (String aClass: newClasses) {
-            this.studentAdapter.add(aClass);
+        for (Attendance aStudent: newStudents) {
+            this.studentAdapter.add(aStudent.getName(), Integer.toString(aStudent.getNumClasses()), Integer.toString(aStudent.getAttendencePercent()) + "%");
         }
+        this.studentList.setAdapter(this.studentAdapter);
     }
 
     public void onAddStudent(View view) {
@@ -105,8 +107,10 @@ public class ManageStudentsActivity extends AppCompatActivity {
         this.newStudentName.getText().clear();
     }
 
+    @SuppressWarnings("unchecked")
     public void onDeleteStudent(View view) {
-        String itemToDelete = this.studentList.getItemAtPosition(this.studentList.getCheckedItemPosition()).toString();
+        HashMap<String, String> item = (HashMap<String, String>)this.studentList.getItemAtPosition(this.studentList.getCheckedItemPosition());
+        String itemToDelete = item.get("first");
         this.myDbHandler.deleteStudentFromClass(itemToDelete, this.className);
         this.populateStudents();
     }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "rollCall";
     private static final String TABLE_CLASSES = "classes";
     private static final String CLASS_ID = "id";
@@ -77,38 +77,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return retval;
     }
 
-    public ArrayList<String> getAllClasses() {
-        ArrayList<String> classList = new ArrayList<>();
-        String selectQuery = "SELECT id FROM " + TABLE_CLASSES + " ORDER BY " + CLASS_ID;
+    public ArrayList<Attendance> getAllClasses() {
+        ArrayList<Attendance> classList = new ArrayList<>();
+        String selectQuery = "SELECT " + CLASS_ID + ", " + CLASS_ROLL_COUNT + " FROM " + TABLE_CLASSES + " ORDER BY " + CLASS_ID;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                classList.add(cursor.getString(0));
+                String name = cursor.getString(0);
+                int count = cursor.getInt(1);
+                int numStudents = 0;
+                int studentTotal = 0;
+
+                String studentCountQuery = "SELECT count(" + STUDENT_NAME + "), " + "SUM(" + STUDENT_ROLL_COUNT + ") " +
+                        " FROM " + TABLE_STUDENTS +
+                        " WHERE " + CLASS_KEY + " = '" + name + "'";
+
+                Cursor cursor2 = db.rawQuery(studentCountQuery, null);
+                if(cursor2.moveToFirst())
+                {
+                    numStudents = cursor2.getInt(0);
+                    studentTotal = cursor2.getInt(1);
+                }
+                cursor2.close();
+                double percentage = 0;
+                if (numStudents > 0 && count > 0) {
+                    percentage = (double)(studentTotal) / (numStudents * count) * 100.0;
+                }
+                Attendance aAttendance = new Attendance(name, count, (int)(percentage + 0.5));
+                classList.add(aAttendance);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return classList;
     }
-    /*
-    // Getting single contact
-    Contact getContact(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
-                        KEY_NAME, KEY_PH_NO }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
-        // return contact
-        return contact;
-    }*/
 
     public boolean updateStudentsPresent(ArrayList<String> studentsPresent, String theClass) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -144,33 +149,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return count == 1;
     }
 
-
-    /**
-    // Getting contacts Count
-    public int getContactsCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_CONTACTS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-
-        // return count
-        return cursor.getCount();
-    }
-     */
-
-    public ArrayList<String> getStudentsInClass(String theClass) {
-        ArrayList<String> studentList = new ArrayList<>();
-        String selectQuery = "SELECT " + STUDENT_NAME +
+    public ArrayList<Attendance> getStudentsInClass(String theClass) {
+        ArrayList<Attendance> studentList = new ArrayList<>();
+        String selectQuery = "SELECT " + STUDENT_NAME + ", " + STUDENT_ROLL_COUNT +
                 " FROM " + TABLE_STUDENTS +
                 " WHERE " + CLASS_KEY + " = ? " +
                 " ORDER BY " + STUDENT_NAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
+
+        String classCountQuery = "SELECT " + CLASS_ROLL_COUNT +
+                " FROM " + TABLE_CLASSES +
+                " WHERE " + CLASS_ID + " = '" + theClass + "'";
+        Cursor cursor2 = db.rawQuery(classCountQuery, null);
+        int classCount = 0;
+        if(cursor2.moveToFirst())
+        {
+            classCount = cursor2.getInt(0);
+        }
+        cursor2.close();
+
         Cursor cursor = db.rawQuery(selectQuery, new String[] { theClass });
 
         if (cursor.moveToFirst()) {
             do {
-                studentList.add(cursor.getString(0));
+
+                String name = cursor.getString(0);
+                int numAttended = cursor.getInt(1);
+                double percentage = (double)numAttended / classCount * 100.0;
+
+                Attendance student = new Attendance(name, numAttended, (int)(percentage + 0.5));
+                studentList.add(student);
             } while (cursor.moveToNext());
         }
         cursor.close();
