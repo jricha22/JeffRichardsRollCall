@@ -5,6 +5,7 @@ import android.test.RenamingDelegatingContext;
 
 import java.util.ArrayList;
 
+import edu.westga.jeffrichardsrollcall.model.Attendance;
 import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 /**
@@ -28,33 +29,32 @@ public class WhenClassManagementTests extends AndroidTestCase {
     }
 
     public void testInitiallyEmpty(){
-        ArrayList<String> classes = db.getAllClasses();
+        ArrayList<Attendance> classes = db.getAllClasses();
         assertEquals(0, classes.size());
     }
 
     public void testAddAClassSizeIsOne(){
         db.addClass("CS6242-1");
-        ArrayList<String> classes = db.getAllClasses();
+        ArrayList<Attendance> classes = db.getAllClasses();
         assertEquals(1, classes.size());
     }
 
     public void testAddAClassGetReturnsThatClass(){
         db.addClass("CS6242-1");
-        ArrayList<String> classes = db.getAllClasses();
-        assertEquals("CS6242-1", classes.get(0));
+        ArrayList<Attendance> classes = db.getAllClasses();
+        assertEquals("CS6242-1", classes.get(0).getName());
     }
 
     public void testAdd2ClassesGetReturns2Classes(){
         db.addClass("CS6242-1");
         db.addClass("CS6242-2");
-        ArrayList<String> classes = db.getAllClasses();
+        ArrayList<Attendance> classes = db.getAllClasses();
         assertEquals(2, classes.size());
     }
 
     public void testAddDuplicateClassFails(){
         db.addClass("CS6242-1");
         boolean result = db.addClass("CS6242-1");
-        ArrayList<String> classes = db.getAllClasses();
         assertEquals(false, result);
     }
 
@@ -62,7 +62,7 @@ public class WhenClassManagementTests extends AndroidTestCase {
         db.addClass("CS6242-1");
         db.addClass("CS6242-2");
         db.deleteClass("CS6242-1");
-        ArrayList<String> classes = db.getAllClasses();
+        ArrayList<Attendance> classes = db.getAllClasses();
         assertEquals(1, classes.size());
     }
 
@@ -70,8 +70,8 @@ public class WhenClassManagementTests extends AndroidTestCase {
         db.addClass("CS6242-1");
         db.addClass("CS6242-2");
         db.deleteClass("CS6242-1");
-        ArrayList<String> classes = db.getAllClasses();
-        assertEquals("CS6242-2", classes.get(0));
+        ArrayList<Attendance> classes = db.getAllClasses();
+        assertEquals("CS6242-2", classes.get(0).getName());
     }
 
     public void testDeleteNonExistentClassFails(){

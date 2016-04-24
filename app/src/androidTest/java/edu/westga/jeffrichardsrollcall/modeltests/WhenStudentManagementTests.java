@@ -5,6 +5,7 @@ import android.test.RenamingDelegatingContext;
 
 import java.util.ArrayList;
 
+import edu.westga.jeffrichardsrollcall.model.Attendance;
 import edu.westga.jeffrichardsrollcall.model.DatabaseHandler;
 
 /**
@@ -29,14 +30,14 @@ public class WhenStudentManagementTests extends AndroidTestCase {
 
     public void testClassInitiallyEmpty(){
         db.addClass("CS6242-1");
-        ArrayList<String> students = db.getStudentsInClass("CS6242-1");
+        ArrayList<Attendance> students = db.getStudentsInClass("CS6242-1");
         assertEquals(0, students.size());
     }
 
     public void testAddingOneStudentGivesClassSize1(){
         db.addClass("CS6242-1");
         db.addStudentToClass("Sam", "CS6242-1");
-        ArrayList<String> students = db.getStudentsInClass("CS6242-1");
+        ArrayList<Attendance> students = db.getStudentsInClass("CS6242-1");
         assertEquals(1, students.size());
     }
 
@@ -45,7 +46,7 @@ public class WhenStudentManagementTests extends AndroidTestCase {
         db.addStudentToClass("Sam", "CS6242-1");
         db.addStudentToClass("Tom", "CS6242-1");
         db.deleteStudentFromClass("Sam", "CS6242-1");
-        ArrayList<String> students = db.getStudentsInClass("CS6242-1");
+        ArrayList<Attendance> students = db.getStudentsInClass("CS6242-1");
         assertEquals(1, students.size());
     }
 
@@ -67,7 +68,11 @@ public class WhenStudentManagementTests extends AndroidTestCase {
         db.addClass("CS6242-1");
         db.addStudentToClass("Z", "CS6242-1");
         db.addStudentToClass("A", "CS6242-1");
-        ArrayList<String> students = db.getStudentsInClass("CS6242-1");
+        ArrayList<Attendance> records = db.getStudentsInClass("CS6242-1");
+        ArrayList<String> students = new ArrayList<>();
+        for (Attendance cur: records) {
+            students.add(cur.getName());
+        }
         ArrayList<String> expected = new ArrayList<>();
         expected.add("A");
         expected.add("Z");
